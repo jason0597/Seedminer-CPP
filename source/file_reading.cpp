@@ -9,8 +9,7 @@
 
 using namespace std;
 
-void read_mp1(movable_part1 *mp1) {
-
+void readMP1(movable_part1 *mp1) {
     ifstream FileIn("movable_part1.txt");
 
     if (!FileIn.is_open()) 
@@ -27,11 +26,14 @@ void read_mp1(movable_part1 *mp1) {
         throw invalid_argument("The ID0 is not 32 characters!");
 
     vector<uint8_t> LFCS = HexToBytes(mp1_txt.at(1), 16); 
-    string ID0 = mp1_txt.at(5);
 
     for (int i = 0; i < 8; i++) 
         mp1->LFCS[i] = LFCS[i];
-    mp1->ID0 = ID0;
+
+    cout << "Before --> " << mp1_txt.at(5) << endl;
+    mp1->ID0 = fixID0(mp1_txt.at(5));
+    cout << "After  --> " << mp1->ID0 << endl;
+    cout << "Should --> " << "464d34a6314fe64bcef402c6c04698dd" << endl;
 }
 
 static vector<string> readAllLines(ifstream* stream) {
@@ -43,6 +45,26 @@ static vector<string> readAllLines(ifstream* stream) {
     }
 
     return mp1_txt;
+}
+
+static string fixID0(string ID0) {
+    //a6344d464be64f31c602f4cedd9846c0
+    //a6344d46 4be64f31 c602f4ce dd9846c0
+    //464d34a6 314fe64b cef402c6 c04698dd
+    //464d34a6314fe64bcef402c6c04698dd
+    string parts[4] = {ID0.substr(0, 8), ID0.substr(8, 8), ID0.substr(16, 8), ID0.substr(24, 8)};
+
+    string return_value = "";
+    for (int i = 0; i < 4; i++) {
+        string tmp = "";
+        for (int j = 7; j >= 0; j -= 2) {
+            tmp.push_back(parts[i].at(j));
+            tmp.push_back(parts[i].at(j-1));
+        }
+        return_value += tmp;
+    }
+
+    return return_value;
 }
 
 // The second parameter of this function tells it how many

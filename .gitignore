@@ -2,3 +2,5 @@ Seedminer.exe
 build/
 movable_part1.txt
 notes.txt
+.vscode
+run.bat
