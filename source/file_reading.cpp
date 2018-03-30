@@ -29,6 +29,7 @@ void readMP1(movable_part1 *mp1) {
 
     for (int i = 0; i < 8; i++) 
         mp1->LFCS[i] = LFCS[i];
+    mp1->isNew3DS = (LFCS[4] == 0x02);
     mp1->ID0 = fixID0(mp1_txt.at(5));
 }
 
