@@ -13,7 +13,9 @@ int main () {
 
     try {
         readMP1(&mp1);
-        parseNodes(mp1.isNew3DS);
+        vector<vector<int32_t>> nodes = readNodes(mp1.isNew3DS);
+        
+
     } catch (invalid_argument e) {
         cout << "An exception occurred!" << endl;
         cout << e.what() << endl;

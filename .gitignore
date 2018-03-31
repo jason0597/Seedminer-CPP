@@ -1,8 +1,9 @@
 Seedminer.exe
-build/
+build
 movable_part1.txt
 notes.txt
 .vscode
+.vs
 run.bat
 lfcs.dat
 lfcs_new.dat
