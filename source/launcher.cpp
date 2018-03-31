@@ -1,4 +1,6 @@
+#include <iostream>
 #include <vector>
+#include <iomanip>
 
 #include "common.h"
 
@@ -10,19 +12,29 @@ static vector<uint8_t> getKeyY(movable_part1 mp1) {
     for (int i = 0; i < 8; i++) 
         key_y[i] = mp1.LFCS[i];
 
-    vector<uint8_t> msed3estimate(4);
+    key_y[12] = mp1.msed3estimate & 0x000000FF;
+    key_y[13] = (mp1.msed3estimate & 0x0000FF00) >> 8;
+    key_y[14] = (mp1.msed3estimate & 0x00FF0000) >> 16;
+    key_y[15] = (mp1.msed3estimate & 0xFF000000) >> 24;
 
-    msed3estimate[0] = mp1.msed3estimate & 0x1;
-    msed3estimate[1] = mp1.msed3estimate & 0x1;
-    msed3estimate[2] = mp1.msed3estimate & 0x1;
-    msed3estimate[3] = mp1.msed3estimate & 0x1;
-
-    return msed3estimate;
+    return key_y;
 }
 
 void doMining(movable_part1 mp1) {
     vector<uint8_t> key_y = getKeyY(mp1);
-    
-    
 
+    string key_y_str = "";
+
+    char buf[] = "00";
+    for (int i = 0; i < key_y.size(); i++) {
+        sprintf(buf, "%02X", key_y[i]);
+        string buf_str = string(buf);
+        key_y_str += buf_str;
+    }
+
+    string command = "bfcl msky " + key_y_str + " " + mp1.id0 + " 00000000";
+
+    cout << "BEGINNING BRUTEFORCE\n==========================\n";
+
+    system(command.c_str());
 }

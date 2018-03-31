@@ -42,7 +42,9 @@ int main () {
         mp1.msed3estimate = ((lfcs_num / 5) + (-1) * msed3error);
         cout << "msed3estimate: " << hex << mp1.msed3estimate << endl;
 
-    } catch (invalid_argument e) {
+        doMining(mp1);
+
+    } catch (exception e) {
         cout << "An exception occurred!" << endl;
         cout << e.what() << endl;
         system("pause");
