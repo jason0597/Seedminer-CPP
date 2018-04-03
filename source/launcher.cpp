@@ -4,10 +4,8 @@
 
 #include "common.h"
 
-using namespace std;
-
-static vector<uint8_t> getKeyY(movable_part1 mp1) {
-    vector<uint8_t> key_y(16);
+static std::vector<uint8_t> getKeyY(movable_part1 mp1) {
+    std::vector<uint8_t> key_y(16);
 
     for (int i = 0; i < 8; i++) 
         key_y[i] = mp1.LFCS[i];
@@ -21,20 +19,21 @@ static vector<uint8_t> getKeyY(movable_part1 mp1) {
 }
 
 void doMining(movable_part1 mp1) {
-    vector<uint8_t> key_y = getKeyY(mp1);
+    std::vector<uint8_t> key_y = getKeyY(mp1);
 
-    string key_y_str = "";
+    std::string key_y_str = "";
 
     char buf[] = "00";
     for (int i = 0; i < key_y.size(); i++) {
         sprintf(buf, "%02X", key_y[i]);
-        string buf_str = string(buf);
+        std::string buf_str = std::string(buf);
         key_y_str += buf_str;
     }
 
-    string command = "bfcl msky " + key_y_str + " " + mp1.id0 + " 00000000";
+    std::string command = "bfcl msky " + key_y_str + " " + mp1.id0 + " 00000000";
 
-    cout << "BEGINNING BRUTEFORCE\n==========================\n";
+	std::cout << "Executing command \"" << command << "\"" << std::endl;
+    std::cout << "BEGINNING BRUTEFORCE\n==========================" << std::endl;
 
     system(command.c_str());
 }

@@ -4,7 +4,7 @@ BUILD			:= build
 
 CC				:= cl
 LD				:= link
-CCFLAGS 		:= -c -EHsc -std:c++17 -I ../$(INCLUDES)
+CCFLAGS 		:= -c -EHsc -I ../$(INCLUDES)
 LDFLAGS			:= -out:Seedminer.exe
 
 SOURCEFILES		:= $(basename $(notdir $(wildcard $(SOURCES)/*.cpp)))

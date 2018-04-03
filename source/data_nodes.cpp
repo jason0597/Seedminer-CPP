@@ -6,24 +6,22 @@
 
 #include "data_nodes.h"
 
-using namespace std;
-
-static vector<uint8_t> readAllBytes(ifstream* stream) {
+static std::vector<uint8_t> readAllBytes(std::ifstream* stream) {
     stream->seekg(0, std::ios::end);
     int filesize = stream->tellg();
-    stream->seekg(0, ios::beg);
+    stream->seekg(0, std::ios::beg);
 
-    vector<uint8_t> buffer(filesize);
+    std::vector<uint8_t> buffer(filesize);
     stream->read((char*)&buffer[0], filesize);
 
     return buffer;
 }
 
-static vector<vector<int32_t>> parseNodes(vector<uint8_t> nodes) {
+static std::vector<std::vector<int32_t>> parseNodes(std::vector<uint8_t> nodes) {
     int no_of_nodes = nodes.size() / 8;
 
-    vector<int32_t> LFCSes(no_of_nodes);
-    vector<int32_t> msed3errors(no_of_nodes);
+    std::vector<int32_t> LFCSes(no_of_nodes);
+    std::vector<int32_t> msed3errors(no_of_nodes);
     
     for (int i = 0; i < nodes.size(); i += 8) {
         LFCSes[i / 8] = nodes[i] | (nodes[i+1] << 8) | (nodes[i+2] << 16) | (nodes[i+3] << 24);  
@@ -33,7 +31,7 @@ static vector<vector<int32_t>> parseNodes(vector<uint8_t> nodes) {
         msed3errors[(i - 4) / 8] = nodes[i] | (nodes[i+1] << 8) | (nodes[i+2] << 16) | (nodes[i+3] << 24);
     }
 
-    vector<vector<int32_t>> parsed_nodes;
+    std::vector<std::vector<int32_t>> parsed_nodes;
     
     parsed_nodes.push_back(LFCSes);
     parsed_nodes.push_back(msed3errors);
@@ -41,9 +39,9 @@ static vector<vector<int32_t>> parseNodes(vector<uint8_t> nodes) {
     return parsed_nodes;
 } 
 
-vector<vector<int32_t>> readNodes(bool isNew3DS) {
-    ifstream FileIn(isNew3DS ? "lfcs_new.dat" : "lfcs.dat", ios::binary);
-    vector<uint8_t> nodes_raw = readAllBytes(&FileIn);
+std::vector<std::vector<int32_t>> readNodes(bool isNew3DS) {
+    std::ifstream FileIn(isNew3DS ? "lfcs_new.dat" : "lfcs.dat", std::ios::binary);
+    std::vector<uint8_t> nodes_raw = readAllBytes(&FileIn);
     FileIn.close();
 
     return parseNodes(nodes_raw); 
