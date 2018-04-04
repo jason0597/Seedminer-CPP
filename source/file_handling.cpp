@@ -65,6 +65,9 @@ namespace file_handling {
 
         char str_char[33];
         memcpy(str_char, &mp1_sed[16], 33);
+        if (strlen(str_char) == 0) {
+            throw std::invalid_argument("The id0 has been left blank!");
+        }
         std::string str(str_char, 32);
 
         mp1->id0 = fixID0(str);
