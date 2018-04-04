@@ -18,17 +18,23 @@ static std::vector<uint8_t> getKeyY(movable_part1 mp1) {
     return key_y;
 }
 
+static std::string vectorToString(std::vector<uint8_t> vec) {
+    std::string return_str;
+
+    char buf[] = "00";
+    for (int i = 0; i < vec.size(); i++) {
+        sprintf(buf, "%02X", vec[i]);
+        std::string buf_str = std::string(buf);
+        return_str += buf_str;
+    }
+    
+    return return_str;
+}
+
 void doMining(movable_part1 mp1) {
     std::vector<uint8_t> key_y = getKeyY(mp1);
 
-    std::string key_y_str = "";
-
-    char buf[] = "00";
-    for (int i = 0; i < key_y.size(); i++) {
-        sprintf(buf, "%02X", key_y[i]);
-        std::string buf_str = std::string(buf);
-        key_y_str += buf_str;
-    }
+    std::string key_y_str = vectorToString(key_y);
 
     std::string command = "bfcl msky " + key_y_str + " " + mp1.id0 + " 00000000";
 
