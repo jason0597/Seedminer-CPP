@@ -5,20 +5,10 @@
 #include "common.hpp"
 
 #include "data_nodes.hpp"
+#include "file_reading.hpp"
 
 namespace data_nodes {
     //===== PRIVATE =====
-    std::vector<uint8_t> readAllBytes(std::ifstream* stream) {
-        stream->seekg(0, std::ios::end);
-        int filesize = stream->tellg();
-        stream->seekg(0, std::ios::beg);
-
-        std::vector<uint8_t> buffer(filesize);
-        stream->read((char*)&buffer[0], filesize);
-
-        return buffer;
-    }
-
     std::vector<std::vector<int32_t>> parseNodes(std::vector<uint8_t> nodes) {
         int no_of_nodes = nodes.size() / 8;
 
@@ -43,10 +33,7 @@ namespace data_nodes {
 
     //===== PUBLIC =====
     std::vector<std::vector<int32_t>> readNodes(bool isNew3DS) {
-        std::ifstream FileIn(isNew3DS ? "lfcs_new.dat" : "lfcs.dat", std::ios::binary);
-        std::vector<uint8_t> nodes_raw = readAllBytes(&FileIn);
-        FileIn.close();
-
+        std::vector<uint8_t> nodes_raw = file_reading::readAllBytes(isNew3DS ? "lfcs_new.dat" : "lfcs.dat");
         return parseNodes(nodes_raw); 
     }
 }

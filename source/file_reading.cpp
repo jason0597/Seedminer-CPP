@@ -8,23 +8,6 @@
 
 namespace file_reading {
     //===== PRIVATE =====
-    std::vector<uint8_t> readAllBytes(std::string filename) {
-        std::ifstream stream(filename, std::ios::binary | std::ios::ate);
-
-        if (!stream.is_open()) {
-            throw std::invalid_argument("Failed to open " + filename);
-        }
-
-        std::streampos filesize = stream.tellg();
-        stream.seekg(0);
-
-        std::vector<uint8_t> buffer(filesize);
-        stream.read((char*)&buffer[0], filesize);
-
-        stream.close();
-        return buffer;
-    }
-
     std::string fixID0(std::string ID0) {
         std::string parts[4] = {ID0.substr(0, 8), ID0.substr(8, 8), ID0.substr(16, 8), ID0.substr(24, 8)};
 
@@ -42,6 +25,23 @@ namespace file_reading {
     }
 
     //===== PUBLIC =====
+    std::vector<uint8_t> readAllBytes(std::string filename) {
+        std::ifstream stream(filename, std::ios::binary | std::ios::ate);
+
+        if (!stream.is_open()) {
+            throw std::invalid_argument("Failed to open " + filename);
+        }
+
+        std::streampos filesize = stream.tellg();
+        stream.seekg(0);
+
+        std::vector<uint8_t> buffer(filesize);
+        stream.read((char*)&buffer[0], filesize);
+
+        stream.close();
+        return buffer;
+    }
+
     void readMP1(movable_part1 *mp1) {
         std::vector<uint8_t> mp1_sed = readAllBytes("movable_part1.sed");
 
