@@ -4,9 +4,9 @@
 
 #include "common.hpp"
 
-#include "file_reading.hpp"
+#include "file_handling.hpp"
 
-namespace file_reading {
+namespace file_handling {
     //===== PRIVATE =====
     std::string fixID0(std::string ID0) {
         std::string parts[4] = {ID0.substr(0, 8), ID0.substr(8, 8), ID0.substr(16, 8), ID0.substr(24, 8)};
@@ -27,7 +27,6 @@ namespace file_reading {
     //===== PUBLIC =====
     std::vector<uint8_t> readAllBytes(std::string filename) {
         std::ifstream stream(filename, std::ios::binary | std::ios::ate);
-
         if (!stream.is_open()) {
             throw std::invalid_argument("Failed to open " + filename);
         }
@@ -40,6 +39,18 @@ namespace file_reading {
 
         stream.close();
         return buffer;
+    }
+
+    void writeBytes(std::string filename, int offset, std::vector<uint8_t> data) {
+        std::ofstream stream(filename, std::ios::binary);
+        if (!stream.is_open()) {
+            throw std::invalid_argument("Failed to open " + filename);
+        }
+
+        stream.seekp(offset);
+        stream.write((char*)&data[0], data.size());
+
+        stream.close();
     }
 
     void readMP1(movable_part1 *mp1) {

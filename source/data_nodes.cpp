@@ -5,7 +5,7 @@
 #include "common.hpp"
 
 #include "data_nodes.hpp"
-#include "file_reading.hpp"
+#include "file_handling.hpp"
 
 namespace data_nodes {
     //===== PRIVATE =====
@@ -33,7 +33,7 @@ namespace data_nodes {
 
     //===== PUBLIC =====
     std::vector<std::vector<int32_t>> readNodes(bool isNew3DS) {
-        std::vector<uint8_t> nodes_raw = file_reading::readAllBytes(isNew3DS ? "lfcs_new.dat" : "lfcs.dat");
+        std::vector<uint8_t> nodes_raw = file_handling::readAllBytes(isNew3DS ? "lfcs_new.dat" : "lfcs.dat");
         return parseNodes(nodes_raw); 
     }
 }
